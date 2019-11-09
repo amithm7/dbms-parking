@@ -7,8 +7,22 @@
 	<title>Parking management system</title>
 
 	<link rel="stylesheet" href="static/css/common.css">
+	<link rel="stylesheet" href="static/css/login.css">
 </head>
 <body>
-	
+	<h1 class="welcome">Welcome to Parking Management System</h1>
+	<section class="entry">
+		<button class="entry__login">Log In</button>
+		<!-- <button class="entry__signup">Sign Up</button> -->
+	</section>
+	<section class="entryForm entryForm--hidden">
+		<form action="/api/login" method="POST" id="entryForm">
+			<input type="text" placeholder="User Name" name="username"> <br>
+			<input type="password" placeholder="Password" name="password"> <br>
+		</form>
+		<button type="submit" form="entryForm">Submit</button>
+		<button class="entryForm__cancel">Cancel</button>
+	</section>
+	<script src="static/js/login.js"></script>
 </body>
 </html>
