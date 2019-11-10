@@ -1,0 +1,36 @@
+.sidenav {
+	height: 100%;
+	width: 180px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 15px;
+	border-right: 2px solid grey;
+}
+
+.sidenav__btn {
+	display: block;
+	padding: 6px;
+	border-width: 3px 0;
+	border-style: solid;
+	border-color: darkslateblue;
+	border-radius: 5px;
+	margin: 30px auto;
+	color: black;
+	font-size: 1.1em;
+	text-decoration: none;
+	text-align: center;
+}
+
+.sidenav__btn--active {
+	background-color: #cacaca;
+}
+
+.logout {
+	border-color: #803838;
+}
+
+.content {
+	margin-left: 180px;
+	height: 100%;
+}

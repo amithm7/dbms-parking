@@ -7,8 +7,23 @@
 	<title>Parking management system</title>
 
 	<link rel="stylesheet" href="static/css/common.css">
+	<link rel="stylesheet" href="static/css/app.css">
 </head>
 <body>
-	
+	<section class="sidenav">
+		<a href="#" class="sidenav__btn sidenav__btn--active" name="vehicleEntry">Vehicle Entry</a>
+		<a href="#" class="sidenav__btn" name="vehicleExit">Vehicle Exit & Billing</a>
+		<a href="#" class="sidenav__btn" name="stats">View Statistics</a>
+		<a href="#" class="sidenav__btn" name="manage">Manage</a>
+		<a href="api/logout" class="sidenav__btn logout">Logout</a>
+	</section>
+	<section class="content">
+		<section class="content__vehicleEntry content--active"></section>
+		<section class="content__vehicleExit"></section>
+		<section class="content__stats"></section>
+		<section class="content__manage"></section>
+	</section>
+
+	<script src="static/js/app.js"></script>
 </body>
 </html>
