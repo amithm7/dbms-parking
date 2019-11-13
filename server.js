@@ -76,3 +76,74 @@ app.get('/api/logout', function (req, res) {
 	req.session.destroy();
 	res.redirect('/');
 });
+
+// Vehicle Entry
+app.post('/api/vehicleEntry', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	console.log(req.body);
+
+	// Vehicle
+	// Update Vehicle Table if it already doesn't exist
+
+	// Generate Token and note entry time
+	var entryTime = Date();
+	var billAmount = 20; // base charge
+
+	// Query and allot a slot for token
+
+	// When all tables are updated
+	res.sendStatus(200);
+	// if Server Error?
+	res.sendStatus(500);
+});
+
+// Vehicle Exit
+app.post('/api/vehicleExit', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	console.log(req.body);
+	
+	var tokenNo = req.body.tokenNo;
+	var exitTime = Date();
+
+	// Calculate bill amount
+	var billAmount;
+
+	// If bill is generated
+	res.status(200).send(billAmount);
+	// if Server Error?
+	res.sendStatus(500);
+});
+
+// Stats - 
+
+// Manage - Employee Addition
+app.post('/api/empAdd', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	// When all tables are updated
+	res.sendStatus(200);
+	// if Server Error?
+	res.sendStatus(500);
+});
+
+// Manage - Employee Deletion
+app.post('/api/empDel', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	// Delete employee from the table
+
+	// If success
+	res.sendStatus(200);
+	// if Server Error?
+	res.sendStatus(500);
+});
