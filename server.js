@@ -73,6 +73,14 @@ app.post('/api/login', function (req, res) {
 
 // Logout
 app.get('/api/logout', function (req, res) {
+
+	// Test mysql connection - logs logout times
+	var logoutTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+	connection.query("INSERT INTO LOGOUT VALUES (\"" + logoutTime + "\")", function (err, result) {
+		if (err) throw err;
+		console.log("app logout at " + logoutTime + " UTC");
+	});
+
 	req.session.destroy();
 	res.redirect('/');
 });
@@ -85,19 +93,27 @@ app.post('/api/vehicleEntry', function (req, res) {
 
 	console.log(req.body);
 
-	// Vehicle
-	// Update Vehicle Table if it already doesn't exist
+	var newVehicle = "INSERT INTO VEHICLE VALUES (" + 
+		req.body.registration + ", " +
+		req.body.brand + ", " +
+		req.body.model + ", " +
+		req.body.color + ", " +
+		req.body.type + ")";
 
 	// Generate Token and note entry time
-	var entryTime = Date();
+	var entryTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
 	var billAmount = 20; // base charge
 
-	// Query and allot a slot for token
+	// TODO - Update Vehicle Table if it already doesn't exist
+	connection.query(newVehicle, function (err, result) {
+		if (err) res.sendStatus(500);
+		console.log("vehicle added");
+		
+		// Query and allot a slot for token
 
-	// When all tables are updated
-	res.sendStatus(200);
-	// if Server Error?
-	res.sendStatus(500);
+		// When all tables are updated
+		res.sendStatus(200);
+	});	
 });
 
 // Vehicle Exit
@@ -109,7 +125,7 @@ app.post('/api/vehicleExit', function (req, res) {
 	console.log(req.body);
 	
 	var tokenNo = req.body.tokenNo;
-	var exitTime = Date();
+	var exitTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 	// Calculate bill amount
 	var billAmount;
@@ -128,10 +144,18 @@ app.post('/api/empAdd', function (req, res) {
 		return res.status(401).send('Unauthorized');
 	}
 
-	// When all tables are updated
-	res.sendStatus(200);
-	// if Server Error?
-	res.sendStatus(500);
+	var newEmployee = "INSERT INTO EMPLOYEE VALUES (" +
+		req.body.ssn + ", " +
+		req.body.firstName + ", " +
+		req.body.lastName + ", " +
+		req.body.sex + ", " +
+		req.body.phone + ")";
+
+	connection.query(newEmployee, function (err, result) {
+		if (err) res.sendStatus(500);
+		console.log("employee added");
+		res.sendStatus(200);
+	});
 });
 
 // Manage - Employee Deletion
