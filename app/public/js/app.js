@@ -20,3 +20,21 @@ document.querySelectorAll('.sidenav__btn').forEach(function (ele) {
 		}
 	});
 });
+
+// Vehicle Entry Form submission
+document.querySelector('.vehicleEntryForm button').addEventListener('click', function() {
+	var vehicleData = {};
+	var form = document.querySelector('.vehicleEntryForm');
+	vehicleData.registration = form.querySelector('[name="registration_1"]').value +
+		form.querySelector('[name="registration_2"]').value +
+		form.querySelector('[name="registration_3"]').value;
+	vehicleData.brand = form.querySelector('[name="brand"]').value;
+	vehicleData.model = form.querySelector('[name="model"]').value;
+	vehicleData.color = form.querySelector('[name="color"]').value;
+	vehicleData.type = form.querySelector('[name="type"]').value;
+
+	xhr = new XMLHttpRequest();
+	xhr.open("POST", "api/vehicleEntry");
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.send(JSON.stringify(vehicleData));
+});

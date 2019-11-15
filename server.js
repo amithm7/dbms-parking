@@ -93,11 +93,11 @@ app.post('/api/vehicleEntry', function (req, res) {
 
 	console.log(req.body);
 
-	var newVehicle = "INSERT INTO VEHICLE VALUES (" + 
-		req.body.registration + ", " +
-		req.body.brand + ", " +
-		req.body.model + ", " +
-		req.body.color + ", " +
+	var newVehicle = "INSERT INTO VEHICLE VALUES (\"" + 
+		req.body.registration + "\", \"" +
+		req.body.brand + "\", \"" +
+		req.body.model + "\", \"" +
+		req.body.color + "\", " +
 		req.body.type + ")";
 
 	// Generate Token and note entry time
@@ -106,7 +106,9 @@ app.post('/api/vehicleEntry', function (req, res) {
 
 	// TODO - Update Vehicle Table if it already doesn't exist
 	connection.query(newVehicle, function (err, result) {
-		if (err) res.sendStatus(500);
+		if (err) {
+			return res.sendStatus(500);
+		}
 		console.log("vehicle added");
 		
 		// Query and allot a slot for token
