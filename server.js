@@ -8,7 +8,8 @@ var connection = mysql.createConnection({
 	user: 'parker',
 	password: 'parker',
 	database: 'parkingTest',
-	multipleStatements: true
+	multipleStatements: true,
+	timezone: 'utc'
 });
 connection.connect(function (err) {
 	if (!err) {
@@ -144,7 +145,7 @@ app.post('/api/vehicleEntry', function (req, res) {
 						console.log(err);
 						return res.sendStatus(500);
 					}
-					console.log("token number " + result[0].insertId + " generated for " + req.body.registration + "and parked at " + parkingArea + parkingSlot);
+					console.log("token number " + result[0].insertId + " generated for " + req.body.registration + " and parked at " + parkingArea + parkingSlot);
 					res.status(200).json({number: result[0].insertId, area: parkingArea, slot: parkingSlot});
 				});
 			} else {
@@ -154,24 +155,42 @@ app.post('/api/vehicleEntry', function (req, res) {
 	});
 });
 
+// View Vehicles
+app.get('/api/viewParkedVehicles', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	var viewParkedVehiclesSQL = "SELECT `NUMBER`, `ENTRY_TIME`, `VEHICLE_REG`, `PARKING_AREA`, `PARKING_SLOT` FROM `TOKEN` WHERE `EXIT_TIME` IS NULL ORDER BY `NUMBER`";
+	connection.query(viewParkedVehiclesSQL, function (err, result) {
+		if (err) {
+			console.log("Error retrieving parked vehicles: " + err.sqlMessage);
+			return res.sendStatus(500);
+		}
+		res.status(200).json(result);
+	});
+});
+
 // Vehicle Exit
 app.post('/api/vehicleExit', function (req, res) {
 	if (!req.session.user) {
 		return res.status(401).send('Unauthorized');
 	}
 
-	console.log(req.body);
-	
-	var tokenNo = req.body.tokenNo;
 	var exitTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-	// Calculate bill amount
-	var billAmount;
-
-	// If bill is generated
-	res.status(200).send(billAmount);
-	// if Server Error?
-	res.sendStatus(500);
+	// TODO - Calculate bill amount using a TRIGGER
+	var billAmount = 20;
+	
+	var exitTokenUpdateSQL = "UPDATE `TOKEN` SET `EXIT_TIME` = '" +
+		exitTime + "', `BILL_AMOUNT` = " +
+		billAmount + " WHERE `NUMBER` = " + req.body.token + ";";
+	connection.query(exitTokenUpdateSQL, function (err, result) {
+		if (err) {
+			console.log("Error exiting vehicle token update: " + err.sqlMessage);
+			return res.sendStatus(500);
+		}
+		res.status(200).json({'billAmount': billAmount});
+	});
 });
 
 // Stats - 

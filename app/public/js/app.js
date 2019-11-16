@@ -68,3 +68,46 @@ document.querySelector('.parkingSpaceForm button').addEventListener('click', fun
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.send(JSON.stringify(parkingSpace));
 });
+
+// View currently parked vehicles
+document.querySelector('.sidenav__btn[name="vehicleExit"]').addEventListener('click', function() {
+	xhr = new XMLHttpRequest();
+	xhr.open("GET", "api/viewParkedVehicles", true);
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var parkedVehicles = JSON.parse(this.responseText);
+			var tableHTML = "<table>";
+			tableHTML += "<tr>";
+			for (var i in Object.keys(parkedVehicles[0])) {
+				tableHTML += "<th>" + Object.keys(parkedVehicles[0])[i] + "</th>";
+			}
+			tableHTML += "<th>Exit</th></tr>";
+			for (i in parkedVehicles) {
+				tableHTML += "<tr value=" + parkedVehicles[i].NUMBER + ">";
+				for (var key in parkedVehicles[i]) {
+					tableHTML += "<td>" + parkedVehicles[i][key] + "</td>";
+				}
+				tableHTML += "<td><button value="+ parkedVehicles[i].NUMBER + ">Exit</button></td></tr>";
+			}
+			tableHTML += "</table>";
+			document.querySelector('.viewVehicles').innerHTML = tableHTML;
+
+			// Vehicle Exit
+			document.querySelectorAll('.viewVehicles table tr button').forEach(function (token) {
+				token.addEventListener('click', function () {
+					xhr = new XMLHttpRequest();
+					xhr.open("POST", "api/vehicleExit");
+					xhr.setRequestHeader("Content-type", "application/json");
+					xhr.onreadystatechange = function () {
+						if (this.readyState == 4 && this.status == 200) {
+							document.querySelector('.viewVehicles table tr[value = "' + token.value + '" ]').innerHTML = "";
+							alert("Bill generated for Rs. " + JSON.parse(this.responseText).billAmount);
+						}
+					};
+					xhr.send(JSON.stringify({ 'token': token.value }));
+				});
+			});
+		}
+	};
+	xhr.send();
+});
