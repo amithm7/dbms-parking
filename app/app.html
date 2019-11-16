@@ -48,7 +48,47 @@
 		</section>
 		<section class="content__vehicleExit"></section>
 		<section class="content__stats"></section>
-		<section class="content__manage"></section>
+		<section class="content__manage">
+			<div class="employeeForm form">
+				<div class="form__element">
+					<span>SSN:</span>
+					<input type="number" name="ssn">
+				</div>
+				<div class="form__element">
+					<span>First Name:</span>
+					<input type="text" name="firstName">
+				</div>
+				<div class="form__element">
+					<span>Last Name:</span>
+					<input type="text" name="lastName">
+				</div>
+				<div class="form__element">
+					<span>Sex:</span>
+					<label><input type="radio" name="sex" value="M"> M </label>
+					<label><input type="radio" name="sex" value="F"> F </label>
+				</div>
+				<div class="form__element">
+					<span>Phone:</span>
+					<input type="tel" name="phone">
+				</div>
+				<button>Add Employee</button>
+			</div>
+			<div class="parkingSpaceForm form">
+				<div class="form__element">
+					<span>Parking Space Name:</span>
+					<input type="text" name="area">
+				</div>
+				<div class="form__element">
+					<span>Slots:</span>
+					<input type="number" name="slots" min="0">
+				</div>
+				<div class="form__element">
+					<span>Admin SSN:</span>
+					<input type="number" name="ssn" min="0">
+				</div>
+				<button>Add Parking Space</button>
+			</div>
+		</section>
 	</section>
 
 	<script src="static/js/app.js"></script>

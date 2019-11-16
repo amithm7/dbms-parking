@@ -31,10 +31,40 @@ document.querySelector('.vehicleEntryForm button').addEventListener('click', fun
 	vehicleData.brand = form.querySelector('[name="brand"]').value;
 	vehicleData.model = form.querySelector('[name="model"]').value;
 	vehicleData.color = form.querySelector('[name="color"]').value;
-	vehicleData.type = form.querySelector('[name="type"]').value;
+	vehicleData.type = form.querySelector('[name="type"]:checked').value;
 
 	xhr = new XMLHttpRequest();
 	xhr.open("POST", "api/vehicleEntry");
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.send(JSON.stringify(vehicleData));
+});
+
+// Employee Form submission
+document.querySelector('.employeeForm button').addEventListener('click', function() {
+	var employee = {};
+	var form = document.querySelector('.employeeForm');
+	employee.ssn = form.querySelector('[name="ssn"]').value;
+	employee.firstName = form.querySelector('[name="firstName"]').value;
+	employee.lastName = form.querySelector('[name="lastName"]').value;
+	employee.sex = form.querySelector('[name="sex"]:checked').value;
+	employee.phone = form.querySelector('[name="phone"]').value;
+
+	xhr = new XMLHttpRequest();
+	xhr.open("POST", "api/empAdd");
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.send(JSON.stringify(employee));
+});
+
+// Parking Space Form submission
+document.querySelector('.parkingSpaceForm button').addEventListener('click', function() {
+	var parkingSpace = {};
+	var form = document.querySelector('.parkingSpaceForm');
+	parkingSpace.area = form.querySelector('[name="area"]').value;
+	parkingSpace.slots = form.querySelector('[name="slots"]').value;
+	parkingSpace.ssn = form.querySelector('[name="ssn"]').value;
+
+	xhr = new XMLHttpRequest();
+	xhr.open("POST", "api/parkingSpaceAdd");
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.send(JSON.stringify(parkingSpace));
 });

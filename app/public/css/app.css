@@ -44,12 +44,18 @@
 	display: block;
 }
 
+.form {
+	width: 400px;
+	margin: 0 auto;
+}
+
 .form__element {
 	padding: 1em;
 }
 
 .form__element span {
 	display: inline-block;
+	width: 100px;
 }
 
 .form button {
@@ -60,14 +66,6 @@
 .vehicleEntryForm {
 	width: 400px;
 	margin: 0 auto;
-}
-
-.vehicleEntryForm .form__element {
-	width: 400px;
-}
-
-.vehicleEntryForm .form__element span {
-	width: 100px;
 }
 
 .vehicleEntryForm__registrationField {

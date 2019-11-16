@@ -182,15 +182,17 @@ app.post('/api/empAdd', function (req, res) {
 		return res.status(401).send('Unauthorized');
 	}
 
-	var newEmployee = "INSERT INTO EMPLOYEE VALUES (" +
-		req.body.ssn + ", " +
-		req.body.firstName + ", " +
-		req.body.lastName + ", " +
-		req.body.sex + ", " +
-		req.body.phone + ")";
-
-	connection.query(newEmployee, function (err, result) {
-		if (err) res.sendStatus(500);
+	var newEmployeeSQL = "INSERT INTO EMPLOYEE VALUES (" +
+		req.body.ssn + ", '" +
+		req.body.firstName + "', '" +
+		req.body.lastName + "', '" +
+		req.body.sex + "', " +
+		req.body.phone + ");";
+	connection.query(newEmployeeSQL, function (err, result) {
+		if (err) {
+			console.log("Error adding employee: " + err.sqlMessage);
+			return res.sendStatus(500);
+		}
 		console.log("employee added");
 		res.sendStatus(200);
 	});
@@ -208,4 +210,25 @@ app.post('/api/empDel', function (req, res) {
 	res.sendStatus(200);
 	// if Server Error?
 	res.sendStatus(500);
+});
+
+// Manage - Parking Space Addition
+app.post('/api/parkingSpaceAdd', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	var parkingSpaceSQL = "";
+	for (var i = 1; i <= req.body.slots; i++) {
+		parkingSpaceSQL += "INSERT INTO `PARKING_SPACE` VALUES ('" +
+			req.body.area + "', " + i + ", 'AV', " +
+			req.body.ssn + ");";
+	}
+	connection.query(parkingSpaceSQL, function (err, result) {
+		if (err) {
+			console.log("Error adding parking slot " + req.body.area + " : " + err.sqlMessage);
+			return res.sendStatus(500);
+		}
+		return res.sendStatus(200);
+	});
 });
