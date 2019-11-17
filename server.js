@@ -177,19 +177,33 @@ app.post('/api/vehicleExit', function (req, res) {
 		return res.status(401).send('Unauthorized');
 	}
 
-	var exitTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-	// TODO - Calculate bill amount using a TRIGGER
-	var billAmount = 20;
-	
-	var exitTokenUpdateSQL = "UPDATE `TOKEN` SET `EXIT_TIME` = '" +
-		exitTime + "', `BILL_AMOUNT` = " +
-		billAmount + " WHERE `NUMBER` = " + req.body.token + ";";
-	connection.query(exitTokenUpdateSQL, function (err, result) {
+	// Query parking slot to be cleared
+	connection.query("SELECT `PARKING_AREA`, `PARKING_SLOT` FROM `TOKEN` WHERE `NUMBER` = ?", req.body.token, function (err, result) {
 		if (err) {
-			console.log("Error exiting vehicle token update: " + err.sqlMessage);
 			return res.sendStatus(500);
 		}
-		res.status(200).json({'billAmount': billAmount});
+
+		var parkingArea = result[0].PARKING_AREA;
+		var parkingSlot = result[0].PARKING_SLOT;
+		var exitTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+		// TODO - Calculate bill amount using a TRIGGER
+		var billAmount = 20;
+		
+		var exitTokenUpdateSQL = "UPDATE `TOKEN` SET `EXIT_TIME` = '" +
+			exitTime + "', `BILL_AMOUNT` = " +
+			billAmount + " WHERE `NUMBER` = " + req.body.token + ";";
+
+		var clearParkingSlotSQL = "UPDATE `PARKING_SPACE` SET `SLOT_STATUS` = 'AV' WHERE `AREA` = '" +
+			parkingArea + "' AND `SLOT_NUMBER` = " +
+			parkingSlot + ";";
+
+		connection.query(exitTokenUpdateSQL + clearParkingSlotSQL, function (err, result) {
+			if (err) {
+				console.log("Error exiting vehicle: " + err.sqlMessage);
+				return res.sendStatus(500);
+			}
+			res.status(200).json({'billAmount': billAmount});
+		});
 	});
 });
 
