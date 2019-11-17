@@ -190,24 +190,37 @@ app.post('/api/vehicleExit', function (req, res) {
 		var billAmount = 20;
 		
 		var exitTokenUpdateSQL = "UPDATE `TOKEN` SET `EXIT_TIME` = '" +
-			exitTime + "', `BILL_AMOUNT` = " +
-			billAmount + " WHERE `NUMBER` = " + req.body.token + ";";
+			exitTime + "' WHERE `NUMBER` = " + req.body.token + ";";
 
 		var clearParkingSlotSQL = "UPDATE `PARKING_SPACE` SET `SLOT_STATUS` = 'AV' WHERE `AREA` = '" +
 			parkingArea + "' AND `SLOT_NUMBER` = " +
 			parkingSlot + ";";
 
-		connection.query(exitTokenUpdateSQL + clearParkingSlotSQL, function (err, result) {
+		var getBillAmountSQL = "SELECT `BILL_AMOUNT` FROM `TOKEN` WHERE `NUMBER` = " + req.body.token + ";";
+
+		connection.query(exitTokenUpdateSQL + clearParkingSlotSQL + getBillAmountSQL, function (err, result) {
 			if (err) {
 				console.log("Error exiting vehicle: " + err.sqlMessage);
 				return res.sendStatus(500);
 			}
-			res.status(200).json({'billAmount': billAmount});
+			res.status(200).json({ 'billAmount': result[2][0].BILL_AMOUNT });
 		});
 	});
 });
 
-// Stats - 
+// Stats - Parking Space Status
+app.get('/api/viewParkingSpace', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	connection.query("SELECT * FROM `PARKING_SPACE` ORDER BY `SLOT_STATUS`, `AREA`, `SLOT_NUMBER`", function (err, result) {
+		if (err) {
+			return res.sendStatus(500);
+		}
+		res.status(200).json(result);
+	});
+});
 
 // Manage - Employee Addition
 app.post('/api/empAdd', function (req, res) {

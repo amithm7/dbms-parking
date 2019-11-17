@@ -72,11 +72,11 @@
 	width: 4em;
 }
 
-.viewVehicles table{
+.viewVehicles table, .viewParkingSpace table{
 	margin: 0 auto;
 }
 
-.viewVehicles table tr > * {
+.viewVehicles table tr > *, .viewParkingSpace table tr > * {
 	font-size: 1.5rem;
 	padding: 1rem;
 	border: black solid 2px;

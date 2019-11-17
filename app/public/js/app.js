@@ -111,3 +111,30 @@ document.querySelector('.sidenav__btn[name="vehicleExit"]').addEventListener('cl
 	};
 	xhr.send();
 });
+
+// View Parking Space statistics
+document.querySelector('.sidenav__btn[name="stats"]').addEventListener('click', function() {
+	xhr = new XMLHttpRequest();
+	xhr.open("GET", "api/viewParkingSpace", true);
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var parkingSpace = JSON.parse(this.responseText);
+			var tableHTML = "<table>";
+			tableHTML += "<tr>";
+			for (var i in Object.keys(parkingSpace[0])) {
+				tableHTML += "<th>" + Object.keys(parkingSpace[0])[i] + "</th>";
+			}
+			tableHTML += "</tr>";
+			for (i in parkingSpace) {
+				tableHTML += "<tr value=" + parkingSpace[i].NUMBER + ">";
+				for (var key in parkingSpace[i]) {
+					tableHTML += "<td>" + parkingSpace[i][key] + "</td>";
+				}
+				tableHTML += "</tr>";
+			}
+			tableHTML += "</table>";
+			document.querySelector('.viewParkingSpace').innerHTML = tableHTML;
+		}
+	};
+	xhr.send();
+});
