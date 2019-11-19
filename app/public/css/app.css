@@ -63,6 +63,31 @@
 	margin: 0 auto;
 }
 
+.form__response {
+	padding-top: 1em;
+	text-align: center;
+}
+
+.form__response > * {
+	display: none;
+}
+
+.res--active {
+	display: inline;
+}
+
+.res__loading {
+	color: grey;
+}
+
+.res__success {
+	color: green;
+}
+
+.res__fail {
+	color: red;
+}
+
 .vehicleEntryForm {
 	width: 400px;
 	margin: 0 auto;

@@ -21,6 +21,37 @@ document.querySelectorAll('.sidenav__btn').forEach(function (ele) {
 	});
 });
 
+// Form "sending" message
+function showFormSendingMsg(form) {
+	var activeResponseHTML = form.querySelector('.form__response .res--active');
+	if (activeResponseHTML) {
+		activeResponseHTML.classList.remove('res--active');
+	}
+	form.querySelector('.form__response .res__loading').classList.add('res--active');
+}
+
+// Form submission response message
+function showFormResponseMsg(xhr, form, msg) {
+	if (xhr.readyState == 4) {
+		var activeResponseHTML = form.querySelector('.form__response .res--active');
+		if (xhr.status == 200) {
+			if (activeResponseHTML) {
+				activeResponseHTML.classList.remove('res--active');
+			}
+			var successResponseHTML = form.querySelector('.form__response .res__success');
+			successResponseHTML.classList.add('res--active');
+			successResponseHTML.querySelector('.res__msg').innerHTML = msg;
+		} else {
+			if (activeResponseHTML) {
+				activeResponseHTML.classList.remove('res--active');
+			}
+			var failResponseHTML = form.querySelector('.form__response .res__fail');
+			failResponseHTML.classList.add('res--active');
+			failResponseHTML.querySelector('.res__msg').innerHTML = msg;
+		}
+	}
+}
+
 // Vehicle Entry Form submission
 document.querySelector('.vehicleEntryForm button').addEventListener('click', function() {
 	var vehicleData = {};
@@ -36,6 +67,20 @@ document.querySelector('.vehicleEntryForm button').addEventListener('click', fun
 	xhr = new XMLHttpRequest();
 	xhr.open("POST", "api/vehicleEntry");
 	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.onreadystatechange = function () {
+		var msg;
+		if (this.readyState == 4) {
+			if (this.status == 200) {
+				var responseText = JSON.parse(this.responseText);
+				msg = "Token number " + responseText.number + " (REG: " + vehicleData.registration + ") is parked at " + responseText.area + responseText.slot;
+			}
+			if (this.status == 500) {
+				msg = this.responseText;
+			}
+		}
+		showFormResponseMsg(this, form, msg);
+	};
+	showFormSendingMsg(form);
 	xhr.send(JSON.stringify(vehicleData));
 });
 
@@ -52,6 +97,10 @@ document.querySelector('.employeeForm button').addEventListener('click', functio
 	xhr = new XMLHttpRequest();
 	xhr.open("POST", "api/empAdd");
 	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.onreadystatechange = function () {
+		showFormResponseMsg(this, form, "");
+	};
+	showFormSendingMsg(form);
 	xhr.send(JSON.stringify(employee));
 });
 
@@ -66,6 +115,10 @@ document.querySelector('.parkingSpaceForm button').addEventListener('click', fun
 	xhr = new XMLHttpRequest();
 	xhr.open("POST", "api/parkingSpaceAdd");
 	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.onreadystatechange = function () {
+		showFormResponseMsg(this, form, "");
+	};
+	showFormSendingMsg(form);
 	xhr.send(JSON.stringify(parkingSpace));
 });
 

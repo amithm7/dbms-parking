@@ -149,7 +149,7 @@ app.post('/api/vehicleEntry', function (req, res) {
 					res.status(200).json({number: result[0].insertId, area: parkingArea, slot: parkingSlot});
 				});
 			} else {
-				return res.status(200).send("Parking Full!");
+				return res.status(500).send("Parking Full!");
 			}
 		});
 	});
