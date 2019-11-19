@@ -132,7 +132,7 @@ document.querySelector('.sidenav__btn[name="vehicleExit"]').addEventListener('cl
 			var tableHTML = "<table>";
 			tableHTML += "<tr>";
 			for (var i in Object.keys(parkedVehicles[0])) {
-				tableHTML += "<th>" + Object.keys(parkedVehicles[0])[i] + "</th>";
+				tableHTML += "<th>" + Object.keys(parkedVehicles[0])[i].replace("_", " ") + "</th>";
 			}
 			tableHTML += "<th>Exit</th></tr>";
 			for (i in parkedVehicles) {
@@ -175,7 +175,7 @@ document.querySelector('.sidenav__btn[name="stats"]').addEventListener('click', 
 			var tableHTML = "<table>";
 			tableHTML += "<tr>";
 			for (var i in Object.keys(parkingSpace[0])) {
-				tableHTML += "<th>" + Object.keys(parkingSpace[0])[i] + "</th>";
+				tableHTML += "<th>" + Object.keys(parkingSpace[0])[i].replace("_", " ") + "</th>";
 			}
 			tableHTML += "</tr>";
 			for (i in parkingSpace) {
