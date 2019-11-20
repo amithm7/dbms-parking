@@ -44,6 +44,23 @@
 	display: block;
 }
 
+.content__manage .nav {
+	text-align: center;
+}
+
+.content__manage .nav > * {
+	display: inline-block;
+	width: 200px;
+}
+
+.content__manage .form {
+	display: none;
+}
+
+.content__manage .form--active {
+	display: block;
+}
+
 .form {
 	width: 400px;
 	margin: 0 auto;
@@ -102,7 +119,6 @@
 }
 
 .viewVehicles table tr > *, .viewParkingSpace table tr > * {
-	font-size: 1.5rem;
 	padding: 1rem;
 	border: black solid 2px;
 	border-radius: 5px;

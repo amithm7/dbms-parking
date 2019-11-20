@@ -52,6 +52,24 @@ function showFormResponseMsg(xhr, form, msg) {
 	}
 }
 
+// Toggle display of manage forms
+document.querySelectorAll('.content__manage .nav .showForm').forEach(function (ele) {
+	ele.addEventListener('click', function () {
+		// Deactivate previous form
+		document.querySelector('.content__manage .form--active').classList.remove('form--active');
+
+		// Activate new form
+		switch (this.name) {
+			case 'showEmployeeForm':
+				document.querySelector('.content__manage .employeeForm').classList.add('form--active');
+				break;
+			case 'showParkingSpaceForm':
+				document.querySelector('.content__manage .parkingSpaceForm').classList.add('form--active');
+				break;
+		}
+	});
+});
+
 // Vehicle Entry Form submission
 document.querySelector('.vehicleEntryForm button').addEventListener('click', function() {
 	var vehicleData = {};
