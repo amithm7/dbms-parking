@@ -65,6 +65,32 @@ document.querySelectorAll('.content__manage .nav .showForm').forEach(function (e
 				break;
 			case 'showParkingSpaceForm':
 				document.querySelector('.content__manage .parkingSpaceForm').classList.add('form--active');
+				var formInputLoadingMsgHTML = document.querySelector('.parkingSpaceForm .formInput__loading');
+				xhr = new XMLHttpRequest();
+				xhr.open("GET", "api/getEmployeeList", true);
+				xhr.onreadystatechange = function () {
+					if (this.readyState == 4) {
+						if (this.status == 200) {
+							var employeeList = JSON.parse(this.responseText);
+							var optionsHTML = "";
+							for (var i in employeeList) {
+								optionsHTML += "<option value = " + employeeList[i].SSN + ">" +
+									employeeList[i].FIRST_NAME + " " + employeeList[i].LAST_NAME +
+									" (" + employeeList[i].SSN + ") " + "</option>";
+							}
+							// Remove loading message before showing employee list
+							formInputLoadingMsgHTML.classList.remove('formInput__loading--active');
+							document.querySelector('.parkingSpaceForm__ssnField').innerHTML = optionsHTML;
+						}
+						if (this.status == 500) {
+							formInputLoadingMsgHTML.innerHTML = "Error!";
+						}
+					}
+				};
+				// Show loading message before sending request to server
+				formInputLoadingMsgHTML.innerHTML = "Loading...";
+				formInputLoadingMsgHTML.classList.add('formInput__loading--active');
+				xhr.send();
 				break;
 		}
 	});

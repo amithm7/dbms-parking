@@ -75,6 +75,15 @@
 	width: 100px;
 }
 
+.form__element .formInput__loading {
+	display: none;
+	color: gray;
+}
+
+.form__element .formInput__loading--active {
+	display: inline-block;
+}
+
 .form button {
 	display: block;
 	margin: 0 auto;

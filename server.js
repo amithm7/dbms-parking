@@ -186,9 +186,7 @@ app.post('/api/vehicleExit', function (req, res) {
 		var parkingArea = result[0].PARKING_AREA;
 		var parkingSlot = result[0].PARKING_SLOT;
 		var exitTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-		// TODO - Calculate bill amount using a TRIGGER
-		var billAmount = 20;
-		
+
 		var exitTokenUpdateSQL = "UPDATE `TOKEN` SET `EXIT_TIME` = '" +
 			exitTime + "' WHERE `NUMBER` = " + req.body.token + ";";
 
@@ -256,6 +254,22 @@ app.post('/api/empDel', function (req, res) {
 	res.sendStatus(200);
 	// if Server Error?
 	res.sendStatus(500);
+});
+
+// Manage - Get employee list
+app.get('/api/getEmployeeList', function (req, res) {
+	if (!req.session.user) {
+		return res.status(401).send('Unauthorized');
+	}
+
+	var getEmployeeListSQL = "SELECT `SSN`, `FIRST_NAME`, `LAST_NAME` FROM `EMPLOYEE` ORDER BY `SSN`";
+	connection.query(getEmployeeListSQL, function (err, result) {
+		if (err) {
+			console.log("Error getting employee list : " + err.sqlMessage);
+			return res.sendStatus(500);
+		}
+		return res.status(200).json(result);
+	});
 });
 
 // Manage - Parking Space Addition
