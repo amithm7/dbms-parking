@@ -93,23 +93,41 @@ app.post('/api/vehicleEntry', function (req, res) {
 		return res.status(401).send('Unauthorized');
 	}
 
-	// Check if this vehicle exists in the DB
-	var vehicleExists = "SELECT COUNT(*) FROM VEHICLE WHERE REGISTRATION = \"" + req.body.registration + "\"";
-	connection.query(vehicleExists, function (err, result) {
+	// Check if this customer or vehicle exists in the DB
+	var customerExists = "SELECT COUNT(*) FROM CUSTOMER WHERE PHONE = \"" + req.body.phone + "\";";
+	var vehicleExists = "SELECT COUNT(*) FROM VEHICLE WHERE REGISTRATION = \"" + req.body.registration + "\";";
+	connection.query(customerExists + vehicleExists, function (err, result) {
 		if (err) {
 			return res.sendStatus(500);
 		}
 
+		// If customer record not found in the DB, add it
+		if (result[0][0]['COUNT(*)'] == 0) {
+			var newCustomerSQL = "INSERT INTO CUSTOMER VALUES ('" +
+				req.body.cusFName + "', '" +
+				req.body.cusLName + "', " +
+				req.body.phone + ");";
+			connection.query(newCustomerSQL, function (err, result) {
+				if (err) {
+					console.log(err);
+					return res.sendStatus(500);
+				}
+				console.log("New customer added");
+			});
+		}
+
 		// If Vehicle record not found in the DB, add it
-		if (result[0]['COUNT(*)'] == 0) {
+		if (result[1][0]['COUNT(*)'] == 0) {
 			var newVehicleSQL = "INSERT INTO VEHICLE VALUES (\"" +
 				req.body.registration + "\", \"" +
 				req.body.brand + "\", \"" +
 				req.body.model + "\", \"" +
 				req.body.color + "\", " +
-				req.body.type + ")";
+				req.body.type + ", " +
+				req.body.phone + ")";
 			connection.query(newVehicleSQL, function (err, result) {
 				if (err) {
+					console.log(err);
 					return res.sendStatus(500);
 				}
 				console.log("New vehicle added");

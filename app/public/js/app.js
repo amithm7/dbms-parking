@@ -108,6 +108,10 @@ document.querySelector('.vehicleEntryForm button').addEventListener('click', fun
 	vehicleData.color = form.querySelector('[name="color"]').value;
 	vehicleData.type = form.querySelector('[name="type"]:checked').value;
 
+	vehicleData.cusFName = form.querySelector('[name="firstName"]').value;
+	vehicleData.cusLName = form.querySelector('[name="lastName"]').value;
+	vehicleData.phone = form.querySelector('[name="phone"]').value;
+
 	xhr = new XMLHttpRequest();
 	xhr.open("POST", "api/vehicleEntry");
 	xhr.setRequestHeader("Content-type", "application/json");

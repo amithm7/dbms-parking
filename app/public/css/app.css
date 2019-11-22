@@ -123,6 +123,10 @@
 	width: 4em;
 }
 
+.vehicleEntryForm__customerNameField {
+	width: 8em;
+}
+
 .viewVehicles table, .viewParkingSpace table{
 	margin: 0 auto;
 }
