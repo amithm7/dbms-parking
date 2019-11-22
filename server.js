@@ -5,9 +5,9 @@ var mysql = require('mysql');
 // Creating mysql connection
 var connection = mysql.createConnection({
 	host: 'localhost',
-	user: 'parker',
-	password: 'parker',
-	database: 'parkingTest',
+	user: 'parkingAPI',
+	password: 'password',
+	database: 'parkingMS',
 	multipleStatements: true,
 	timezone: 'utc'
 });
