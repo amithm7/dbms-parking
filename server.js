@@ -75,14 +75,6 @@ app.post('/api/login', function (req, res) {
 
 // Logout
 app.get('/api/logout', function (req, res) {
-
-	// Test mysql connection - logs logout times
-	var logoutTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-	connection.query("INSERT INTO LOGOUT VALUES (\"" + logoutTime + "\")", function (err, result) {
-		if (err) throw err;
-		console.log("app logout at " + logoutTime + " UTC");
-	});
-
 	req.session.destroy();
 	res.redirect('/');
 });
@@ -258,20 +250,6 @@ app.post('/api/empAdd', function (req, res) {
 		console.log("employee added");
 		res.sendStatus(200);
 	});
-});
-
-// Manage - Employee Deletion
-app.post('/api/empDel', function (req, res) {
-	if (!req.session.user) {
-		return res.status(401).send('Unauthorized');
-	}
-
-	// Delete employee from the table
-
-	// If success
-	res.sendStatus(200);
-	// if Server Error?
-	res.sendStatus(500);
 });
 
 // Manage - Get employee list
