@@ -1,7 +1,7 @@
 {
   "name": "dbms-parking",
   "version": "1.0.0",
-  "description": "## Application details:",
+  "description": "A simple application to manage parking spaces",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
