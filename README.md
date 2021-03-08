@@ -2,6 +2,8 @@
 
 A simple application to manage parking spaces
 
+![Peek 2021-03-08 18-59](https://user-images.githubusercontent.com/7036770/110328597-8d7de600-8041-11eb-92e0-da24d286a5fe.gif)
+
 ## Requirements
 
 - [NodeJS](https://nodejs.org)
